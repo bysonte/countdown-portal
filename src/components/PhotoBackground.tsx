@@ -12,37 +12,38 @@ function PhotoCell({ url, className }: { url: string; className: string }) {
   useEffect(() => {
     if (url === prevUrlRef.current) return;
     prevUrlRef.current = url;
-
+    
+    // Step 1: Load new photo into the hidden face
     if (showARef.current) {
-      // A is visible → load new photo into B, then reveal B
       setUrlB(url);
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() => {
-          setShowA(false);
-          showARef.current = false;
-        })
-      );
     } else {
-      // B is visible → load new photo into A, then reveal A
       setUrlA(url);
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() => {
-          setShowA(true);
-          showARef.current = true;
-        })
-      );
     }
+
+    // Step 2: Delay to ensure image is assigned, then trigger the fade
+    const timer = setTimeout(() => {
+      showARef.current = !showARef.current;
+      setShowA(showARef.current);
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [url]);
 
   return (
     <div className={className}>
       <div
         className="photo-bg-face"
-        style={{ backgroundImage: `url(${urlA})`, opacity: showA ? 1 : 0 }}
+        style={{ 
+          backgroundImage: `url(${urlA})`, 
+          opacity: showA ? 1 : 0
+        }}
       />
       <div
         className="photo-bg-face"
-        style={{ backgroundImage: `url(${urlB})`, opacity: showA ? 0 : 1 }}
+        style={{ 
+          backgroundImage: `url(${urlB})`, 
+          opacity: showA ? 0 : 1
+        }}
       />
     </div>
   );
@@ -50,13 +51,11 @@ function PhotoCell({ url, className }: { url: string; className: string }) {
 
 interface PhotoBackgroundProps {
   photos: ReadonlyArray<Photo>;
-  tickMs?: number; // ms between each individual cell update
 }
 
-const CELL_COUNT = 3;
+const CELL_COUNT = 6;
 
-export function PhotoBackground({ photos, tickMs = 5500 }: PhotoBackgroundProps) {
-  // Each cell cycles through a slice of the photo array
+export function PhotoBackground({ photos }: PhotoBackgroundProps) {
   const indicesRef = useRef<number[]>(
     Array.from({ length: CELL_COUNT }, (_, i) => i % photos.length)
   );
@@ -65,20 +64,27 @@ export function PhotoBackground({ photos, tickMs = 5500 }: PhotoBackgroundProps)
     Array.from({ length: CELL_COUNT }, (_, i) => photos[i % photos.length].url)
   );
 
-  const tickCountRef = useRef(0); // which cell to update next
+
+
+  // Keep track of the last updated cells to avoid repetition
+  const lastUpdatedCellsRef = useRef<number[]>([]);
 
   useEffect(() => {
-    const reduced =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (photos.length <= CELL_COUNT || reduced) return;
+    if (photos.length <= CELL_COUNT) return;
 
     const timer = setInterval(() => {
-      const cell = tickCountRef.current % CELL_COUNT;
-      tickCountRef.current++;
+      // Pick a random cell that isn't among the last 3 updated
+      let cell: number;
+      do {
+        cell = Math.floor(Math.random() * CELL_COUNT);
+      } while (lastUpdatedCellsRef.current.includes(cell));
 
-      // Advance this cell's photo index by CELL_COUNT (so each cell has its own slice)
-      const next = (indicesRef.current[cell] + CELL_COUNT) % photos.length;
+      // Update history (keep only the last 3)
+      lastUpdatedCellsRef.current = [cell, ...lastUpdatedCellsRef.current].slice(0, 3);
+
+      // Advance this cell's photo index by a random amount to avoid predictable cycles
+      const jump = Math.floor(Math.random() * 8) + 1;
+      const next = (indicesRef.current[cell] + jump) % photos.length;
       indicesRef.current[cell] = next;
 
       setUrls(prev => {
@@ -86,17 +92,17 @@ export function PhotoBackground({ photos, tickMs = 5500 }: PhotoBackgroundProps)
         updated[cell] = photos[next].url;
         return updated;
       });
-    }, tickMs);
+    }, 3000); 
 
     return () => clearInterval(timer);
-  }, [photos, tickMs]);
+  }, [photos]);
 
   return (
     <div className="photo-bg" aria-hidden="true">
       <div className="photo-bg-grid">
-        <PhotoCell url={urls[0]} className="photo-cell-0" />
-        <PhotoCell url={urls[1]} className="photo-cell-1" />
-        <PhotoCell url={urls[2]} className="photo-cell-2" />
+        {urls.map((url, i) => (
+          <PhotoCell key={i} url={url} className={`photo-cell-${i}`} />
+        ))}
       </div>
       <div className="photo-bg-overlay" />
     </div>

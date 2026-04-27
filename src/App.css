@@ -41,27 +41,18 @@ body {
   z-index: 0;
 }
 
-/* 3-cell asymmetric grid: big cell left, two stacked right */
+/* 6-cell grid: 3 columns, 2 rows */
 .photo-bg-grid {
   position: absolute;
   inset: 0;
   display: grid;
-  gap: 3px;
-  grid-template-columns: 1.65fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    "big s1"
-    "big s2";
+  gap: 4px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
 }
 
-.photo-cell-0 { grid-area: big; }
-.photo-cell-1 { grid-area: s1; }
-.photo-cell-2 { grid-area: s2; }
-
-/* Each cell has two faces for crossfade */
-.photo-cell-0,
-.photo-cell-1,
-.photo-cell-2 {
+.photo-cell-0, .photo-cell-1, .photo-cell-2,
+.photo-cell-3, .photo-cell-4, .photo-cell-5 {
   position: relative;
   overflow: hidden;
 }
@@ -71,21 +62,25 @@ body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  transition: opacity 1.2s ease-in-out;
+  transition: opacity 2s ease-in-out;
+  will-change: opacity;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo-bg-face { transition: none; }
-}
-
-/* Mobile: show only 2 cells side by side */
-@media (max-width: 640px) {
+/* Mobile: show fewer cells to avoid clutter */
+@media (max-width: 768px) {
   .photo-bg-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "big s1";
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
-  .photo-cell-2 { display: none; }
+  .photo-cell-4, .photo-cell-5 { display: none; }
+}
+
+@media (max-width: 480px) {
+  .photo-bg-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .photo-cell-2, .photo-cell-3 { display: none; }
 }
 
 .photo-bg-overlay {
@@ -93,9 +88,9 @@ body {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(5, 30, 42, 0.30) 0%,
-    rgba(5, 30, 42, 0.55) 60%,
-    rgba(5, 30, 42, 0.82) 100%
+    rgba(5, 30, 42, 0.40) 0%,
+    rgba(5, 30, 42, 0.65) 60%,
+    rgba(5, 30, 42, 0.85) 100%
   );
 }
 
@@ -204,8 +199,8 @@ body {
 
 /* Progress bar */
 .trip-progress {
-  margin: 0.2rem 0 0.6rem;
-  padding: 0 0.25rem;
+  margin: 1.5rem 0 1.2rem;
+  padding: 0 0.5rem;
   width: 100%;
 }
 
@@ -215,18 +210,17 @@ body {
   align-items: center;
   font-size: 0.75rem;
   color: rgba(255,255,255,0.5);
-  margin-bottom: 0.55rem;
+  margin-bottom: 1.1rem;
 }
 
 .progress-pct {
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #67e8f9;
-  -webkit-text-fill-color: #67e8f9;
 }
 
 .progress-track {
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.12);
   border-radius: 50px;
   position: relative;
@@ -244,15 +238,16 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-65%);
-  font-size: 1rem;
+  font-size: 1.6rem;
   line-height: 1;
   pointer-events: none;
   z-index: 2;
+  filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.4));
 }
 
 .countdown-info {
-  margin-top: 0.8rem;
-  padding-top: 0.8rem;
+  margin-top: 1.8rem;
+  padding-top: 1.2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
   width: 100%;
 }
@@ -547,32 +542,33 @@ body {
 ::-webkit-scrollbar-thumb  { background: rgba(6, 182, 212, 0.3); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(6, 182, 212, 0.5); }
 
-/* ===== Responsive ===== */
-@media (min-width: 768px) {
-  .hero-card {
-    padding: 3rem 2.5rem 2.5rem;
-  }
-}
-
-/* Medium mobile — shrink flip clock */
-@media (max-width: 600px) {
+/* Medium mobile — shrink flip clock and adjust padding */
+@media (max-width: 768px) {
   .hero {
     padding: 1.5rem 1rem 4rem;
   }
   .hero-card {
-    padding: 1.8rem 1.2rem 1.6rem;
+    padding: 2rem 1.2rem 1.8rem;
     gap: 0.4rem;
-    border-radius: 20px;
+    border-radius: 24px;
+  }
+  .hero-card h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+  .hero-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
   }
   .flip-clock-container {
-    --fcc-digit-block-width: 38px;
-    --fcc-digit-block-height: 50px;
-    --fcc-digit-font-size: 2rem;
-    --fcc-spacing: 0.65rem;
+    --fcc-digit-block-width: 36px;
+    --fcc-digit-block-height: 48px;
+    --fcc-digit-font-size: 1.8rem;
+    --fcc-spacing: 0.6rem;
     --fcc-digit-block-spacing: 3px;
   }
   .countdown-heading {
     font-size: 1rem;
+    margin-bottom: 0.6rem;
   }
   .music-player {
     bottom: 1rem;
@@ -580,21 +576,57 @@ body {
   }
 }
 
-/* Small mobile — shrink further */
-@media (max-width: 420px) {
+/* Small mobile — shrink further for devices under 480px */
+@media (max-width: 480px) {
   .hero-card {
-    padding: 1.4rem 0.9rem 1.3rem;
+    padding: 1.5rem 0.8rem 1.4rem;
+    border-radius: 20px;
+  }
+  .hero-card h1 {
+    font-size: 1.6rem;
   }
   .flip-clock-container {
-    --fcc-digit-block-width: 31px;
-    --fcc-digit-block-height: 42px;
-    --fcc-digit-font-size: 1.65rem;
-    --fcc-spacing: 0.5rem;
+    --fcc-digit-block-width: 30px;
+    --fcc-digit-block-height: 40px;
+    --fcc-digit-font-size: 1.5rem;
+    --fcc-spacing: 0.4rem;
     --fcc-digit-block-spacing: 2px;
   }
+  .progress-labels {
+    font-size: 0.7rem;
+  }
+  .progress-pct {
+    font-size: 0.75rem;
+  }
+  .countdown-info p {
+    font-size: 0.8rem;
+  }
   .photo-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-auto-rows: 140px;
-    gap: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-auto-rows: 130px;
+    gap: 6px;
+  }
+  .map-section {
+    padding: 1.5rem 1rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .map-canvas, .map-loading {
+    height: 300px;
+  }
+  .app-main {
+    padding: 1.5rem 0.8rem 1rem;
+  }
+}
+
+/* Very small mobile — hide seconds and optimize space */
+@media (max-width: 360px) {
+  .hero-card {
+    padding: 1.2rem 0.6rem 1.1rem;
+  }
+  .flip-clock-container {
+    --fcc-digit-block-width: 26px;
+    --fcc-digit-block-height: 36px;
+    --fcc-digit-font-size: 1.3rem;
+    --fcc-spacing: 0.35rem;
   }
 }

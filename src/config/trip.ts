@@ -55,7 +55,6 @@ export const TRIP = {
     { url: '/album/web/DSC_3713_JPG.webp', caption: '' },
     { url: '/album/web/DSC_3734_JPG.webp', caption: '' },
     { url: '/album/web/IMG_20220917_113955.webp', caption: '' },
-    { url: '/album/web/IMG_20220922_120408_1.webp', caption: '' },
     { url: '/album/web/IMG_20220922_120408_1_2.webp', caption: '' },
     { url: '/album/web/IMG_2480.webp', caption: '' },
     { url: '/album/web/IMG_2505.webp', caption: '' },

@@ -26,8 +26,9 @@ export default function App() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.8 }}
       >
-        <p>Creado con ❤️ para nuestro grupo de amigos aventureros</p>
-        <p>¿Listos para el viaje de nuestras vidas?</p>
+        <p>Creado con ❤️ del 243 para el 235...</p>
+        <p>Gracias, gracias, gracias... 🎊</p>
+        <p>Te amo Pucana!!, los amamos chicos!! siempre juntos!!!! 🎊🎊🎊</p>
       </motion.footer>
 
       <MusicPlayer />

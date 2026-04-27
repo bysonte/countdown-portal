@@ -19,12 +19,12 @@ export function CountdownDisplay() {
           labels={['Días', 'Horas', 'Minutos', 'Segundos']}
           showSeparators={false}
           labelStyle={{
-            fontSize: '0.68rem',
+            fontSize: '0.62rem',
             fontWeight: 600,
             textTransform: 'uppercase',
-            letterSpacing: '1.8px',
+            letterSpacing: '1px',
             color: 'rgba(255,255,255,0.55)',
-            marginTop: '6px',
+            marginTop: '8px',
           }}
           digitBlockStyle={{
             // width/height/fontSize controlled by CSS vars so media queries can override
@@ -34,7 +34,7 @@ export function CountdownDisplay() {
           }}
           dividerStyle={{ color: 'rgba(255,255,255,0.2)', height: 1 }}
           duration={0.5}
-          spacing={{ clock: '1rem', digitBlock: '4px' }}
+          spacing={{ clock: '0.6rem', digitBlock: '3px' }}
           stopOnHiddenVisibility
         >
           <motion.span
@@ -64,7 +64,7 @@ export function CountdownDisplay() {
           <motion.span
             className="progress-plane"
             initial={{ left: '0%' }}
-            animate={{ left: `calc(${progress}% - 10px)` }}
+            animate={{ left: `calc(${progress}% - 14px)` }}
             transition={{ duration: 1.4, ease: 'easeOut', delay: 0.6 }}
           >
             🛫
