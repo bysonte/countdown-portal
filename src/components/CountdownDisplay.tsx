@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
 import { TRIP } from '../config/trip';
+import { CocktailGenerator } from './CocktailGenerator';
+import { PHRASES } from '../config/phrases';
 
 export function CountdownDisplay() {
+  const [isCompleted, setIsCompleted] = useState(TRIP.targetDate.getTime() <= Date.now());
+  const [phrase] = useState(() => PHRASES[Math.floor(Math.random() * PHRASES.length)]);
   const now = Date.now();
   const total = TRIP.targetDate.getTime() - TRIP.progressStartDate.getTime();
   const elapsed = now - TRIP.progressStartDate.getTime();
@@ -11,32 +16,10 @@ export function CountdownDisplay() {
 
   return (
     <div className="countdown-display-wrapper">
-      <h2 className="countdown-heading">Pucana, allá vamos!!!!</h2>
+      <h2 className="countdown-heading">{phrase}</h2>
 
-      <div className="flip-clock-container">
-        <FlipClockCountdown
-          to={TRIP.targetDate}
-          labels={['Días', 'Horas', 'Minutos', 'Segundos']}
-          showSeparators={false}
-          labelStyle={{
-            fontSize: '0.62rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '1px',
-            color: 'rgba(255,255,255,0.55)',
-            marginTop: '8px',
-          }}
-          digitBlockStyle={{
-            // width/height/fontSize controlled by CSS vars so media queries can override
-            fontWeight: 700,
-            color: '#ffffff',
-            borderRadius: '10px',
-          }}
-          dividerStyle={{ color: 'rgba(255,255,255,0.2)', height: 1 }}
-          duration={0.5}
-          spacing={{ clock: '0.6rem', digitBlock: '3px' }}
-          stopOnHiddenVisibility
-        >
+      <div className="countdown-split-layout">
+        {isCompleted ? (
           <motion.span
             className="completed-text"
             initial={{ scale: 0.5, opacity: 0 }}
@@ -45,7 +28,63 @@ export function CountdownDisplay() {
           >
             ¡YA EMPEZÓ! 🎉
           </motion.span>
-        </FlipClockCountdown>
+        ) : (
+          <>
+            <div className="flip-clock-container days-container">
+              <FlipClockCountdown
+                to={TRIP.targetDate}
+                labels={['Días', 'Horas', 'Minutos', 'Segundos']}
+                renderMap={[true, false, false, false]}
+                showSeparators={false}
+                onComplete={() => setIsCompleted(true)}
+                labelStyle={{
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.5px',
+                  color: '#67e8f9',
+                  marginTop: '12px',
+                }}
+                digitBlockStyle={{
+                  fontWeight: 800,
+                  color: '#ffffff',
+                  borderRadius: '12px',
+                }}
+                dividerStyle={{ color: 'rgba(255, 255, 255, 0.2)', height: 1 }}
+                duration={0.5}
+                spacing={{ clock: '0.6rem', digitBlock: '4px' }}
+                stopOnHiddenVisibility
+              />
+            </div>
+
+            <div className="flip-clock-container time-container">
+              <FlipClockCountdown
+                to={TRIP.targetDate}
+                labels={['Días', 'Horas', 'Minutos', 'Segundos']}
+                renderMap={[false, true, true, true]}
+                showSeparators={false}
+                onComplete={() => setIsCompleted(true)}
+                labelStyle={{
+                  fontSize: '0.62rem',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  color: 'rgba(255, 255, 255, 0.55)',
+                  marginTop: '8px',
+                }}
+                digitBlockStyle={{
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  borderRadius: '8px',
+                }}
+                dividerStyle={{ color: 'rgba(255, 255, 255, 0.2)', height: 1 }}
+                duration={0.5}
+                spacing={{ clock: '0.6rem', digitBlock: '3px' }}
+                stopOnHiddenVisibility
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <div className="trip-progress">
@@ -75,6 +114,9 @@ export function CountdownDisplay() {
       <div className="countdown-info">
         <p>{TRIP.departureLine}</p>
       </div>
+
+
+      <CocktailGenerator />
     </div>
   );
 }

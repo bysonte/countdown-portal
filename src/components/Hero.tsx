@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { PhotoBackground } from './PhotoBackground';
 import { ScrollIndicator } from './ScrollIndicator';
@@ -5,6 +6,25 @@ import { CountdownDisplay } from './CountdownDisplay';
 import { TRIP } from '../config/trip';
 
 export function Hero() {
+  const [weatherTemp, setWeatherTemp] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function fetchWeather() {
+      try {
+        const res = await fetch(
+          'https://api.open-meteo.com/v1/forecast?latitude=18.5818&longitude=-68.4043&current=temperature_2m'
+        );
+        const data = await res.json();
+        if (data && data.current) {
+          setWeatherTemp(Math.round(data.current.temperature_2m));
+        }
+      } catch (err) {
+        console.error('Error fetching weather for badge:', err);
+      }
+    }
+    fetchWeather();
+  }, []);
+
   return (
     <section className="hero">
       <PhotoBackground photos={TRIP.photos} />
@@ -21,7 +41,7 @@ export function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          {TRIP.header.badge}
+          {TRIP.header.badge} {weatherTemp !== null ? ` | ☀️ ${weatherTemp}°C` : ''}
         </motion.span>
 
         <motion.h1

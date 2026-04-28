@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import type { Photo } from '../config/trip';
 
 interface PhotoGridProps {
@@ -11,6 +11,7 @@ interface PhotoGridProps {
 export function PhotoGrid({ photos, albumUrl, albumLabel }: PhotoGridProps) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px 0px' });
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
   return (
     <motion.section
@@ -28,12 +29,46 @@ export function PhotoGrid({ photos, albumUrl, albumLabel }: PhotoGridProps) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: (i % 6) * 0.07 }}
+            onClick={() => setSelectedPhoto(photo)}
           >
             <img src={photo.url} alt={photo.caption} loading="lazy" decoding="async" />
             <figcaption>{photo.caption}</figcaption>
           </motion.figure>
         ))}
       </div>
+
+      <AnimatePresence>
+        {selectedPhoto && (
+          <motion.div
+            className="lightbox-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPhoto(null)}
+          >
+            <button
+              className="lightbox-close"
+              onClick={() => setSelectedPhoto(null)}
+              aria-label="Cerrar"
+            >
+              &times;
+            </button>
+            <motion.figure
+              className="lightbox-content"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img src={selectedPhoto.url} alt={selectedPhoto.caption} />
+              {selectedPhoto.caption && (
+                <figcaption>{selectedPhoto.caption}</figcaption>
+              )}
+            </motion.figure>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {albumUrl && (
         <div className="album-link-wrapper">
