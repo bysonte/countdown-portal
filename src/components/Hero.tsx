@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { FiMapPin, FiSun } from 'react-icons/fi';
 import { PhotoBackground } from './PhotoBackground';
 import { ScrollIndicator } from './ScrollIndicator';
 import { CountdownDisplay } from './CountdownDisplay';
@@ -7,6 +7,17 @@ import { TRIP } from '../config/trip';
 
 export function Hero() {
   const [weatherTemp, setWeatherTemp] = useState<number | null>(null);
+  const [lanternLit, setLanternLit] = useState(false);
+
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      setLanternLit(true);
+      return undefined;
+    }
+    const id = window.setTimeout(() => setLanternLit(true), 180);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     async function fetchWeather() {
@@ -26,43 +37,37 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="hero">
+    <section className={`hero${lanternLit ? ' is-lit' : ''}`}>
       <PhotoBackground photos={TRIP.photos} />
 
-      <motion.div
-        className="hero-card"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
-      >
-        <motion.span
-          className="header-badge"
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          {TRIP.header.badge} {weatherTemp !== null ? ` | ☀️ ${weatherTemp}°C` : ''}
-        </motion.span>
+      <div className="hero-lantern">
+        <div className={`hero-card${lanternLit ? ' is-lit' : ''}`}>
+          <span className="hero-wick" aria-hidden="true" />
+          <div className="hero-meta">
+            <div className="header-badge">
+              <span className="live-beacon" aria-hidden="true">
+                <span className="live-beacon-dot" />
+                <span className="live-beacon-ring" />
+              </span>
+              <FiMapPin className="badge-pin-icon" aria-hidden="true" />
+              <span className="badge-destination">{TRIP.header.badge}</span>
+              {weatherTemp !== null && (
+                <>
+                  <span className="badge-separator" aria-hidden="true" />
+                  <FiSun className="badge-sun-icon" aria-hidden="true" />
+                  <span className="badge-temp">{weatherTemp}°C Caribe</span>
+                </>
+              )}
+            </div>
+          </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.7 }}
-        >
-          {TRIP.header.title}
-        </motion.h1>
+          <h1 className="hero-main-title">{TRIP.header.title}</h1>
 
-        <motion.p
-          className="hero-subtitle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.82 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
-        >
-          {TRIP.header.subtitle}
-        </motion.p>
+          <p className="hero-subtitle">{TRIP.header.subtitle}</p>
 
-        <CountdownDisplay />
-      </motion.div>
+          <CountdownDisplay />
+        </div>
+      </div>
 
       <ScrollIndicator />
     </section>

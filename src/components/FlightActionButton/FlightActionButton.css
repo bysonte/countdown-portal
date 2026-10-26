@@ -1,0 +1,287 @@
+.flight-action-btn {
+  align-self: center;
+  width: 265.5px;
+  height: 152.5px;
+  padding: 0;
+  margin: -2.5rem 0 -2.2rem;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.flight-action-btn:disabled {
+  cursor: wait;
+}
+
+.flight-action-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.flight-action-bg {
+  fill: #65737b;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill 0.3s ease;
+}
+
+.flight-action-btn:hover:not(:disabled) .flight-action-bg {
+  fill: #535e66;
+}
+
+.flight-action-label {
+  fill: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.flight-action-runway {
+  opacity: 0;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.flight-action-runway polygon {
+  fill: #535e66;
+}
+
+.flight-action-runway path {
+  fill: #ffffff;
+}
+
+.flight-action-plane-wrapper {
+  opacity: 0;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.flight-action-plane-build {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.flight-action-plane-body {
+  fill: #ebecec;
+}
+
+.flight-action-wing,
+.flight-action-tail {
+  fill: #f3f3f3;
+  opacity: 0;
+  transform: scale(0);
+  transform-box: fill-box;
+}
+
+.flight-action-wing-l {
+  transform-origin: right center;
+}
+
+.flight-action-wing-r {
+  transform-origin: left center;
+}
+
+.flight-action-tail {
+  transform-origin: bottom center;
+}
+
+.flight-action-windows,
+.flight-action-pilot {
+  fill: #8acfe3;
+  opacity: 0;
+}
+
+.flight-action-engine {
+  fill: #646e75;
+  opacity: 0;
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.flight-action-btn.is-launching .flight-action-bg {
+  animation: flightSvgButton 2.5s ease-in-out both;
+}
+
+.flight-action-btn.is-launching .flight-action-label {
+  animation: flightSvgLabel 2.5s ease-in-out both;
+}
+
+.flight-action-btn.is-launching .flight-action-runway {
+  animation: flightSvgRunway 2.5s ease-in-out both;
+}
+
+.flight-action-btn.is-launching .flight-action-plane-wrapper {
+  animation: flightSvgPlaneAway 2.5s ease-in both;
+}
+
+.flight-action-btn.is-launching .flight-action-plane-build {
+  animation: flightSvgPlaneSettle 1.15s ease-out both;
+}
+
+.flight-action-btn.is-launching .flight-action-wing,
+.flight-action-btn.is-launching .flight-action-tail {
+  animation: flightSvgPartIn 2.5s ease-in-out both;
+}
+
+.flight-action-btn.is-launching .flight-action-engine {
+  animation: flightSvgEngineIn 2.5s ease-in-out both;
+}
+
+.flight-action-btn.is-launching .flight-action-windows,
+.flight-action-btn.is-launching .flight-action-pilot {
+  animation: flightSvgDetailsIn 2.5s ease-in-out both;
+}
+
+@keyframes flightSvgButton {
+  0% {
+    fill: #535e66;
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  20% {
+    opacity: 0;
+    transform: rotate(180deg) scale(1.1);
+  }
+
+  46%,
+  70% {
+    opacity: 0;
+    transform: translate(-1200px, -600px) rotate(180deg) scale(0.5);
+  }
+
+  100% {
+    fill: #65737b;
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes flightSvgRunway {
+  0%,
+  16% {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.62);
+  }
+
+  24%,
+  45% {
+    opacity: 1;
+    transform: rotate(180deg) scale(0.78);
+  }
+
+  72% {
+    opacity: 0;
+    transform: translate(-1200px, -600px) rotate(180deg) scale(0.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg) scale(0.62);
+  }
+}
+
+@keyframes flightSvgLabel {
+  0%,
+  16% {
+    opacity: 1;
+  }
+
+  28%,
+  82% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes flightSvgPlaneSettle {
+  0% {
+    transform: translate(-6px, 8px) scale(0.92);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes flightSvgPlaneAway {
+  0%,
+  22% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  34%,
+  50% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  83% {
+    opacity: 1;
+    transform: translate(1200px, 600px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(1200px, 600px);
+  }
+}
+
+@keyframes flightSvgPartIn {
+  0%,
+  22% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  40%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flightSvgEngineIn {
+  0%,
+  30% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  52%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flightSvgDetailsIn {
+  0%,
+  28% {
+    opacity: 0;
+  }
+
+  44%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .flight-action-btn {
+    width: 235px;
+    height: 135px;
+  }
+}

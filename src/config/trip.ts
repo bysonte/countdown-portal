@@ -4,7 +4,7 @@ export interface Photo {
 }
 
 export const TRIP = {
-  targetDate: new Date('2026-09-13T08:30:00-03:00'),
+  targetDate: new Date('2026-09-12T02:00:00-03:00'),
   progressStartDate: new Date('2026-01-01T00:00:00-03:00'),
 
   destination: {
@@ -19,11 +19,18 @@ export const TRIP = {
 
   header: {
     title: 'Me lo merezco!',
-    subtitle: 'Sabés lo que me costó llegar hasta acá... ????',
-    badge: '✈️  Punta Cana · Sep 2026',
+    subtitle: 'Sabés lo que me costó llegar hasta acá...',
+    badge: 'Punta Cana · Sep 2026',
   },
 
-  departureLine: '📅 13 de Septiembre, 2026 · 8:30 AM, la aventura empieza aquí...',
+  departureLine: '12 de septiembre, 2026 · 2:00 AM (Ezeiza). ¡La aventura empieza aquí!',
+
+  progress: {
+    origin: 'Ezeiza',
+    destination: 'Punta Cana',
+    startLabel: 'Ene 2026',
+    endLabel: 'Sep 2026',
+  },
 
   // Google Photos album shared URL (photos.app.goo.gl/...)
   album: {

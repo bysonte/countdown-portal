@@ -1,14 +1,25 @@
-import { motion } from 'framer-motion';
 import { Hero } from './components/Hero';
 import { MapSection } from './components/MapSection';
 import { PhotoGrid } from './components/PhotoGrid';
 import { MusicPlayer } from './components/MusicPlayer';
 import { TRIP } from './config/trip';
+import { FiHeart, FiMapPin, FiCompass } from 'react-icons/fi';
 import './App.css';
 
 export default function App() {
   return (
     <div className="App">
+      {/* Background ambient lighting aura */}
+      <div className="ambient-backdrop" aria-hidden="true">
+        <div className="ambient-blob ambient-blob-1" />
+        <div className="ambient-blob ambient-blob-2" />
+        <div className="ambient-blob ambient-blob-3" />
+      </div>
+
+      <a className="skip-link" href="#recuerdos">
+        Ir a los recuerdos
+      </a>
+
       <Hero />
 
       <main className="app-main">
@@ -20,18 +31,28 @@ export default function App() {
         />
       </main>
 
-      <motion.footer
-        className="app-footer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-      >
-        <p>Creado con ❤️ del 243 para el 235...</p>
-        <p>Gracias, gracias, gracias... 🎊</p>
-        <p>Te amo Pucana!!, los amamos chicos!! siempre juntos!!!! 🎊🎊🎊</p>
-      </motion.footer>
+      <footer className="app-footer">
+        <div className="footer-inner">
+          <div className="footer-badge">
+            <FiCompass className="footer-badge-icon" aria-hidden="true" />
+            <span>Punta Cana 2026 · Cuenta Regresiva Oficial</span>
+          </div>
+
+          <p className="footer-from">
+            Creado con <FiHeart className="footer-heart-icon" aria-hidden="true" /> del 243 para el 235
+          </p>
+          <p className="footer-thanks">Gracias, gracias, gracias...</p>
+          <p className="footer-love">
+            "Te amo Pucana!!, los amamos chicos!! siempre juntos!!!!"
+          </p>
+          <div className="footer-subtext">
+            <span>Meliá Caribe Beach Resort · República Dominicana</span>
+          </div>
+        </div>
+      </footer>
 
       <MusicPlayer />
     </div>
   );
 }
+

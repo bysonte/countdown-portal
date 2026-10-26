@@ -1,0 +1,128 @@
+.celebration-garland-fullscreen {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  height: 64px;
+  margin: 0 0 -12px 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.garland-rope-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  overflow: visible;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+}
+
+.garland-pennants-row {
+  position: absolute;
+  top: 14px;
+  left: 2%;
+  right: 2%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.garland-pennant-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: garlandSway 2.8s ease-in-out infinite alternate;
+}
+
+.garland-pennant {
+  width: 22px;
+  height: 30px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  opacity: 0.94;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-top: 2px solid rgba(255, 255, 255, 0.7);
+  transition: transform 0.2s ease;
+}
+
+.garland-fairy-light {
+  position: absolute;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  animation: fairyLightTwinkle 1.8s ease-in-out infinite alternate;
+}
+
+.garland-flower {
+  position: absolute;
+  top: -4px;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.55));
+  animation: flowerPulse 3s ease-in-out infinite alternate;
+}
+
+.garland-flower--left {
+  left: 12px;
+}
+
+.garland-flower--center {
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
+}
+
+.garland-flower--right {
+  right: 12px;
+}
+
+@keyframes garlandSway {
+  0% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes fairyLightTwinkle {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes flowerPulse {
+  0% {
+    transform: scale(0.92) rotate(-6deg);
+  }
+  100% {
+    transform: scale(1.12) rotate(6deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .celebration-garland-fullscreen {
+    height: 48px;
+  }
+  .garland-pennant {
+    width: 14px;
+    height: 20px;
+  }
+  .garland-flower {
+    font-size: 1.15rem;
+  }
+  .garland-flower--center {
+    display: none;
+  }
+}

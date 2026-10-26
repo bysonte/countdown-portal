@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "1.9.0",
     "@types/google.maps": "^3.58.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -18,9 +19,9 @@
     "vite": "^8.0.10"
   },
   "dependencies": {
-    "@leenguyen/react-flip-clock-countdown": "^1.7.2",
     "@neondatabase/serverless": "^1.1.0",
     "@react-google-maps/api": "^2.20.3",
+    "canvas-confetti": "1.9.4",
     "framer-motion": "^12.38.0",
     "react": "^19.0.0",
     "react-countdown": "^2.3.6",

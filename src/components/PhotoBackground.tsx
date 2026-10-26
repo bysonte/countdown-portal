@@ -1,8 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 import type { Photo } from '../config/trip';
 
+function preloadImage(url: string) {
+  const image = new Image();
+  image.src = url;
+  return image.decode().catch(() => undefined);
+}
+
 // Each cell manages its own A/B double buffer and crossfades independently
-function PhotoCell({ url, className }: { url: string; className: string }) {
+const PhotoCell = memo(function PhotoCell({ url, className }: { url: string; className: string }) {
   const [urlA, setUrlA] = useState(url);
   const [urlB, setUrlB] = useState(url);
   const [showA, setShowA] = useState(true);
@@ -47,7 +53,7 @@ function PhotoCell({ url, className }: { url: string; className: string }) {
       />
     </div>
   );
-}
+});
 
 interface PhotoBackgroundProps {
   photos: ReadonlyArray<Photo>;
@@ -71,8 +77,13 @@ export function PhotoBackground({ photos }: PhotoBackgroundProps) {
 
   useEffect(() => {
     if (photos.length <= CELL_COUNT) return;
+    let isMounted = true;
 
-    const timer = setInterval(() => {
+    const tick = async () => {
+      if (document.hidden) {
+        return;
+      }
+
       // Pick a random cell that isn't among the last 3 updated
       let cell: number;
       do {
@@ -86,15 +97,28 @@ export function PhotoBackground({ photos }: PhotoBackgroundProps) {
       const jump = Math.floor(Math.random() * 8) + 1;
       const next = (indicesRef.current[cell] + jump) % photos.length;
       indicesRef.current[cell] = next;
+      const nextUrl = photos[next].url;
+
+      await preloadImage(nextUrl);
+      if (!isMounted || document.hidden) {
+        return;
+      }
 
       setUrls(prev => {
         const updated = [...prev];
-        updated[cell] = photos[next].url;
+        updated[cell] = nextUrl;
         return updated;
       });
-    }, 3000); 
+    };
 
-    return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      void tick();
+    }, 3000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+    };
   }, [photos]);
 
   return (
@@ -105,6 +129,7 @@ export function PhotoBackground({ photos }: PhotoBackgroundProps) {
         ))}
       </div>
       <div className="photo-bg-overlay" />
+      <div className="photo-bg-grain" />
     </div>
   );
 }

@@ -18,6 +18,7 @@ export function SpectrumAnalyzer({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const barValuesRef = useRef<Float32Array>(new Float32Array(bars));
+  const lastDrawRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -44,11 +45,17 @@ export function SpectrumAnalyzer({
       const usableBins = Math.floor(analyser.frequencyBinCount * 0.75);
       const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-      const draw = () => {
+      const draw = (timestamp: number) => {
         if (document.hidden) {
+          return;
+        }
+
+        if (timestamp - lastDrawRef.current < 33) {
           rafRef.current = requestAnimationFrame(draw);
           return;
         }
+
+        lastDrawRef.current = timestamp;
         analyser.getByteFrequencyData(dataArray);
         ctx.clearRect(0, 0, width, height);
 

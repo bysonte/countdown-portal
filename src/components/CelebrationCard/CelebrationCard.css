@@ -1,0 +1,353 @@
+.celebration-container {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+/* Fullscreen Floating celebratory background emojis */
+.celebration-floating-particles {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 99;
+}
+
+.floating-particle {
+  position: absolute;
+  bottom: -60px;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  opacity: 0.75;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+  animation: floatUpwardFullscreen linear infinite;
+}
+
+@keyframes floatUpwardFullscreen {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Main Celebration Card */
+.celebration-card {
+  position: relative;
+  width: 100%;
+  background: radial-gradient(
+      circle at top center,
+      rgba(246, 211, 101, 0.18) 0%,
+      rgba(10, 36, 50, 0.82) 65%,
+      rgba(5, 20, 30, 0.94) 100%
+    );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(246, 211, 101, 0.45);
+  border-radius: var(--radius-xl, 32px);
+  padding: 36px 28px 32px;
+  box-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.7),
+    0 0 45px rgba(246, 211, 101, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  text-align: center;
+  color: var(--text, #f8fafc);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.celebration-card-glow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(240, 194, 122, 0.28) 0%,
+    rgba(46, 196, 214, 0.12) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: celebrationPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes celebrationPulse {
+  0% {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+/* Status Pill */
+.celebration-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: linear-gradient(135deg, rgba(246, 211, 101, 0.22), rgba(46, 196, 214, 0.18));
+  border: 1px solid rgba(246, 211, 101, 0.5);
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffe6a7;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 15px rgba(246, 211, 101, 0.2);
+}
+
+.celebration-live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #38ef7d;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #38ef7d;
+  animation: liveDotPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes liveDotPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.celebration-sparkle-icon {
+  font-size: 0.95rem;
+  color: #ffd700;
+  animation: sparkleRotate 3s linear infinite;
+}
+
+@keyframes sparkleRotate {
+  0% {
+    transform: rotate(0deg) scale(0.9);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(0.9);
+  }
+}
+
+/* Title */
+.celebration-title {
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, #ffffff 10%, #ffd700 50%, #ff8ed4 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 12px rgba(246, 211, 101, 0.45));
+}
+
+.celebration-description {
+  font-size: clamp(0.95rem, 1.8vw, 1.12rem);
+  color: var(--text-muted, #cbd5e1);
+  max-width: 620px;
+  margin: 0 auto 26px auto;
+  line-height: 1.6;
+}
+
+.celebration-description strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Trip feature chips */
+.celebration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto 28px auto;
+}
+
+.celebration-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md, 14px);
+  text-align: left;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.celebration-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(246, 211, 101, 0.4);
+}
+
+.chip-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.chip-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim, #94a3b8);
+  font-weight: 600;
+}
+
+.chip-val {
+  font-size: 0.88rem;
+  color: var(--text, #f8fafc);
+  font-weight: 600;
+}
+
+/* Interactive Joy Buttons */
+.celebration-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.celebration-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.celebration-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.1);
+}
+
+.celebration-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.celebration-btn--confetti {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 50%, #ffd166 100%);
+  color: #1a0808;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+.celebration-btn--toast {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #211200;
+  box-shadow: 0 8px 25px rgba(246, 211, 101, 0.4);
+}
+
+.celebration-btn--music {
+  background: linear-gradient(135deg, #2ec4d6 0%, #38ef7d 100%);
+  color: #03201f;
+  box-shadow: 0 8px 25px rgba(46, 196, 214, 0.4);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.btn-icon-svg {
+  font-size: 1.15rem;
+}
+
+/* Toast Message Bubble */
+.toast-cheers-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 18px;
+  background: rgba(246, 211, 101, 0.2);
+  border: 1px solid rgba(246, 211, 101, 0.6);
+  border-radius: var(--radius-full, 9999px);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.toast-heart {
+  color: #ff6b6b;
+  fill: #ff6b6b;
+}
+
+/* Back button in preview */
+.celebration-back-btn {
+  display: inline-block;
+  margin-top: 20px;
+  background: none;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  padding: 6px 16px;
+  border-radius: var(--radius-full, 9999px);
+  color: var(--text-muted, #cbd5e1);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.celebration-back-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 600px) {
+  .celebration-card {
+    padding: 26px 18px 24px;
+  }
+  .celebration-grid {
+    grid-template-columns: 1fr;
+  }
+  .celebration-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .celebration-btn {
+    width: 100%;
+  }
+}
